@@ -3,10 +3,11 @@ package org.dev.plannet.member;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 import org.dev.plannet.BaseEntity;
 
 @Getter
-@Builder
+@SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
@@ -28,7 +29,19 @@ public class Member extends BaseEntity {
                 .password(newPassword)
                 .nickname(this.nickname)
                 .phone(this.phone)
+                .createdAt(this.getCreatedAt())  // BaseEntity의 createdAt 사용
                 .build();
     }
 
+    @Override
+    public String toString() {
+        return "Member{" +
+                "id=" + id +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", nickname='" + nickname + '\'' +
+                ", phone='" + phone + '\'' +
+                ", createdAt='" + getCreatedAt() + '\'' +
+                '}';
+    }
 }

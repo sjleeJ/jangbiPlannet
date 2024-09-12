@@ -1,6 +1,5 @@
 CREATE TABLE IF NOT EXISTS `jangbiplannet`.`member` (
     `id` BIGINT NOT NULL AUTO_INCREMENT,
-    `role_id` TINYINT NOT NULL,
     `email` VARCHAR(100) NOT NULL,
     `password` VARCHAR(100) NOT NULL,
     `nickname` VARCHAR(100) NULL,
@@ -12,8 +11,15 @@ CREATE TABLE IF NOT EXISTS `jangbiplannet`.`member` (
     ENGINE = InnoDB
 
 
-CREATE TABLE IF NOT EXISTS `jangbiplannet`.`member` (
+CREATE TABLE IF NOT EXISTS `jangbiplannet`.`role` (
     `id` TINYINT NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(20) NOT NULL,
+    PRIMARY KEY (`id`) VISIBLE)
+    ENGINE = InnoDB
+
+CREATE TABLE IF NOT EXISTS `jangbiplannet`.`role_member` (
+    `id` BIGINT NOT NULL AUTO_INCREMENT,
+    `role_id` TINYINT NOT NULL ,
+    `member_id` BIGINT NOT NULL ,
     PRIMARY KEY (`id`) VISIBLE)
     ENGINE = InnoDB
