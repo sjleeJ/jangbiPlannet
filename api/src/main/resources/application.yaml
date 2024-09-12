@@ -1,0 +1,14 @@
+spring:
+  profiles:
+    active: ${spring.active}
+
+server:
+  port: ${port:5000}
+  forward-headers-strategy: native
+
+logging:
+  level:
+    com:
+      amazonaws:
+        util:
+          EC2MetadataUtils: error

@@ -1,5 +1,6 @@
 rootProject.name = 'plannet'
 include 'common'
-include 'db'
+include 'domain'
 include 'api'
+
 
