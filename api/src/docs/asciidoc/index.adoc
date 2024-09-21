@@ -1,0 +1,11 @@
+= 장비플래닛 문서
+
+[discreate]
+==== 멤버 회원가입 요청
+include::{snippets}/sign-up/http-request.adoc[]
+include::{snippets}/sign-up/curl-request.adoc[]
+
+[discreate]
+==== 멤버 회원가입 응답
+include::{snippets}/sign-up/http-response.adoc[]
+include::{snippets}/sign-up/request-fields.adoc[]
