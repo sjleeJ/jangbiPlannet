@@ -2,21 +2,30 @@ plugins {
     id 'java'
     id 'org.springframework.boot'
     id 'io.spring.dependency-management'
+    id "org.asciidoctor.jvm.convert" version "3.3.2"
 }
 
 group = 'org.dev.plannet'
-version = 'unspecified'
+version = '1.0'
 
 repositories {
     mavenCentral()
+    maven { url 'https://jitpack.io' }
 }
 
-test {
-    useJUnitPlatform() // JUnit 5를 사용하도록 설정
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+    asciidoctorEx
+}
+
+ext {
+    snippetsDir = file('./build/generated-snippets')
 }
 
 dependencies {
-
     implementation project(':common')
     implementation project(':domain')
 
@@ -30,17 +39,48 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
 
+    // Spring REST Docs 추가
+    testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
+
     testImplementation 'org.mockito:mockito-core'
     testImplementation 'org.junit.jupiter:junit-jupiter-api'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
 
-
+    asciidoctorEx 'org.springframework.restdocs:spring-restdocs-asciidoctor'
 }
 
+springBoot {
+    buildInfo()
+    mainClass = "org.dev.plannet.Application"
+}
+
+
 bootJar {
-    enabled = true
+    dependsOn asciidoctor
+    from ("${asciidoctor.outputDir}") {
+        into 'static/docs'
+    }
 }
 
 jar {
     enabled = false
 }
+
+tasks.named('test') {
+    useJUnitPlatform {
+        excludeTags("integration")
+    }
+}
+
+tasks.register("integrationTest", Test) {
+    outputs.dir snippetsDir
+    useJUnitPlatform {
+        includeTags("integration")
+    }
+}
+tasks.named('asciidoctor') {
+    inputs.dir snippetsDir
+    configurations 'asciidoctorEx'
+    dependsOn integrationTest
+}
+

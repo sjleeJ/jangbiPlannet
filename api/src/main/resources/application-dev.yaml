@@ -23,7 +23,7 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/jangbiplannet
-    username: test
-    password: 0000
+    username: janbi
+    password: newpassword
     hikari:   # HikariCP 설정 추가
       maximum-pool-size: 10  # HikariCP 설정에 맞춰 수정
