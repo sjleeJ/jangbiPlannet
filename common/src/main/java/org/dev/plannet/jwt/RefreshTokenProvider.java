@@ -30,11 +30,9 @@ public class RefreshTokenProvider {
     final long tokenValidityInMilliseconds;
     protected static final String IDENTY_KEY = "identyKey";
     protected Key key;
-    private final String secret;
 
     public RefreshTokenProvider(@Value("${jwt.refresh.token.secret}") String secret,
                                 @Value("${jwt.refresh.token.seconds}") long tokenValidityInSeconds) {
-        this.secret = secret;
         this.tokenValidityInMilliseconds = tokenValidityInSeconds * 1000;
         byte[] keyBytes = Decoders.BASE64.decode(secret);
         this.key = Keys.hmacShaKeyFor(keyBytes);

@@ -5,6 +5,10 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.dev.plannet.BaseEntity;
+import org.dev.plannet.member.role.MemberRole;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @SuperBuilder
@@ -21,6 +25,9 @@ public class Member extends BaseEntity {
     private String password;
     private String nickname;
     private String phone;
+
+    @OneToMany(mappedBy = "member")
+    private List<MemberRole> memberRoleList = new ArrayList<>();
 
     public Member changePassword(String newPassword) {
         return Member.builder()

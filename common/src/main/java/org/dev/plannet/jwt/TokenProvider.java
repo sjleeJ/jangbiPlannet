@@ -31,14 +31,12 @@ public class TokenProvider {
     protected static final String EMAIL = "email";
     final long tokenValidityInMilliseconds;
     protected Key key;
-    private final String secret;
     private final String AUTHORIZATION_HEADER = "Authorization";
     private final String BEARER_PREFIX = "Bearer ";
 
     public TokenProvider(
             @Value("${jwt.access.token.secret}") String secret,
             @Value("${jwt.access.token.seconds}") long tokenValidityInSeconds) {
-        this.secret = secret;
         this.tokenValidityInMilliseconds = tokenValidityInSeconds * 1000;
         byte[] keyBytes = Decoders.BASE64.decode(secret);
         this.key = Keys.hmacShaKeyFor(keyBytes);
