@@ -10,7 +10,7 @@ import org.dev.plannet.BaseEntity;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "role")
-public class Role extends BaseEntity {
+public class Role  {
     @Id
     @GeneratedValue
     private Long id;

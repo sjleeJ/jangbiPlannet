@@ -62,7 +62,7 @@ public class MemberControllerTest {
                         )
                 ));
 
-        Member memberResult = memberRepository.findByEmail("test1@gmail.com");
+        Member memberResult = memberRepository.findByEmail("test1@gmail.com").orElseThrow();
         System.out.println("member:"+memberResult.toString());
         assertAll(
                 () -> assertThat(memberResult.getEmail()).isEqualTo("test1@gmail.com"),
