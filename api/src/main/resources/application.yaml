@@ -3,7 +3,7 @@ spring:
     active: ${spring.active:dev}
 
 server:
-  port: ${port:5001}
+  port: ${port:5002}
   forward-headers-strategy: native
 
 

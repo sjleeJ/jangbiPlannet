@@ -37,8 +37,10 @@ public class JwtFilter extends GenericFilterBean {
         String jwt = resolveToken(request);
         String path = request.getRequestURI();
         // 경로에 대해 필터를 건너뛰도록 설정
-        if (path.startsWith("/oauth2")||
-                path.startsWith("/open-api")) {
+        if (path.startsWith("/swagger-ui/")
+                || path.startsWith("/v3/api-docs")
+                || path.startsWith("/swagger")
+                || path.startsWith("/open-api")) {
             filterChain.doFilter(request, response);
             return;
         }

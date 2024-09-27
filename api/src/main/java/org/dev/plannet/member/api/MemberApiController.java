@@ -10,7 +10,7 @@ import org.dev.plannet.member.presentation.MemberService;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/members")
+@RequestMapping("/open-api/v1/members")
 @AllArgsConstructor
 public class MemberApiController {
     private final MemberService memberService;
@@ -21,7 +21,7 @@ public class MemberApiController {
         return Api.Ok(response);
     }
 
-    @GetMapping("/emails/{email}")
+    @GetMapping("/email/{email}")
     public Api<MemberCheckResponse> emailDuplicated(@PathVariable String email) {
         MemberCheckResponse response = memberService.emailDuplicateCheck(email);
         return Api.Ok(response);

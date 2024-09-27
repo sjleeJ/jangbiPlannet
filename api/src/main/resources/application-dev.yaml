@@ -23,7 +23,16 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/jangbiplannet
-    username: janbi
-    password: newpassword
+    username: ${mysql.username}
+    password: ${mysql.password}
     hikari:   # HikariCP 설정 추가
       maximum-pool-size: 10  # HikariCP 설정에 맞춰 수정
+jwt:
+  access:
+    token:
+      secret: ${jwt.access.token.secret}  # JWT 비밀 키 (Base64로 인코딩된 값)
+      seconds: ${jwt.access.token.seconds}  # 액세스 토큰의 유효 기간 (초 단위)
+  refresh:
+    token:
+      secret: ${jwt.refresh.token.secret}  # 리프레시 토큰 비밀 키
+      seconds: ${jwt.refresh.token.seconds}   #
