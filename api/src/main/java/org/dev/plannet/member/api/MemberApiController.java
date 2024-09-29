@@ -2,6 +2,8 @@ package org.dev.plannet.member.api;
 
 import org.dev.plannet.api.Api;
 import org.dev.plannet.member.dto.check.MemberCheckResponse;
+import org.dev.plannet.member.dto.signin.MemberSignInDto;
+import org.dev.plannet.member.dto.signin.MemberSignInResponseDto;
 import org.dev.plannet.member.dto.signup.MemberSignUpDto;
 import org.dev.plannet.member.dto.signup.MemberSignUpResponseDto;
 import org.dev.plannet.member.presentation.MemberService;
@@ -25,6 +27,12 @@ class MemberApiController {
 	@PostMapping
 	public Api<MemberSignUpResponseDto> signUp(@RequestBody @Valid MemberSignUpDto signUpDto) {
 		MemberSignUpResponseDto response = memberService.saveMember(signUpDto);
+		return Api.Ok(response);
+	}
+
+	@PostMapping("/login")
+	public Api<MemberSignInResponseDto> signIn(@RequestBody @Valid MemberSignInDto signInDto) {
+		MemberSignInResponseDto response = memberService.signIn(signInDto);
 		return Api.Ok(response);
 	}
 

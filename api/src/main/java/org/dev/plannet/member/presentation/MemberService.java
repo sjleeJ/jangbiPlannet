@@ -6,15 +6,23 @@ import org.dev.plannet.encrypt.EncryptionUtils;
 import org.dev.plannet.error.ErrorCode;
 import org.dev.plannet.error.UserErrorCode;
 import org.dev.plannet.exception.ApiException;
+import org.dev.plannet.jwt.TokenProvider;
 import org.dev.plannet.member.Member;
 import org.dev.plannet.member.MemberRepository;
 import org.dev.plannet.member.dto.check.MemberCheckResponse;
+import org.dev.plannet.member.dto.signin.MemberSignInDto;
+import org.dev.plannet.member.dto.signin.MemberSignInResponseDto;
 import org.dev.plannet.member.dto.signup.MemberSignUpDto;
 import org.dev.plannet.member.dto.signup.MemberSignUpResponseDto;
 import org.dev.plannet.member.role.MemberRole;
 import org.dev.plannet.member.role.MemberRoleRepository;
 import org.dev.plannet.role.Role;
 import org.dev.plannet.role.RoleRepository;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,6 +36,9 @@ public class MemberService {
 	private final RoleRepository roleRepository;
 	private final EncryptionUtils encryptionUtils;
 	private final MemberRoleRepository memberRoleRepository;
+	private final TokenProvider tokenProvider;
+	private final PasswordEncoder passwordEncoder;
+	private final AuthenticationManagerBuilder authenticationManagerBuilder;
 	private final String ROLE_USER = "ROLE_USER";
 
 	@Transactional
@@ -65,6 +76,24 @@ public class MemberService {
 		Boolean response = memberRepository.existsByEmail(email);
 
 		return MemberCheckResponse.of(response);
+	}
+
+	public MemberSignInResponseDto signIn(MemberSignInDto request) {
+		Member member = memberRepository.findByEmail(request.email()).orElseThrow(
+			() -> new ApiException(UserErrorCode.NOT_EXIST_USER)
+		);
+
+		if (passwordEncoder.matches(request.password(), member.getPassword())) {
+			UsernamePasswordAuthenticationToken authenticationToken =
+				new UsernamePasswordAuthenticationToken(request.email(), request.password());
+
+			Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
+			SecurityContextHolder.getContext().setAuthentication(authentication);
+
+			String accessToken = tokenProvider.createToken(authentication, member);
+			return new MemberSignInResponseDto(accessToken);
+		}
+		throw new ApiException(UserErrorCode.NOT_EXIST_USER);
 	}
 
 }
