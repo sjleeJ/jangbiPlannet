@@ -1,9 +1,13 @@
 package org.dev.plannet;
 
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import java.lang.annotation.*;
 
 //Mock이라는 단어를 사전에서 찾아보면 '테스트를 위해 만든 모형'을 의미
 //테스트를 위해 실제 객체와 비슷한 모의 객체를 만드는 것을 모킹(Mocking)   모킹한 객체를 메모리에서 얻어내는 과정을 목업(Mock-up)

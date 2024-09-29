@@ -1,8 +1,12 @@
 package org.dev.plannet;
 
-import org.junit.jupiter.api.Tag;
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-import java.lang.annotation.*;
+import org.junit.jupiter.api.Tag;
 
 // Annotion 에 대해 불필요한 내용이 포함되거나 필요한 내용이 있는 경우 Cusotom 을 할 경우가 존재
 // @Target @Retention

@@ -25,7 +25,7 @@ spring:
     url: jdbc:mysql://localhost:3306/jangbiplannet
     username: ${mysql.username}
     password: ${mysql.password}
-    hikari:   # HikariCP 설정 추가
+    hikari: # HikariCP 설정 추가
       maximum-pool-size: 10  # HikariCP 설정에 맞춰 수정
 jwt:
   access:

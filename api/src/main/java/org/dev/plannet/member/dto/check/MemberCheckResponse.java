@@ -1,9 +1,9 @@
 package org.dev.plannet.member.dto.check;
 
 public record MemberCheckResponse(
-        Boolean duplicated
+	Boolean duplicated
 ) {
-    public static MemberCheckResponse of(boolean duplicated) {
-        return new MemberCheckResponse(duplicated);
-    }
+	public static MemberCheckResponse of(boolean duplicated) {
+		return new MemberCheckResponse(duplicated);
+	}
 }
