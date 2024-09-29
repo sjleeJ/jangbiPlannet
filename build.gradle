@@ -1,21 +1,20 @@
 plugins {
-	id 'java'
-	id 'org.springframework.boot' version '3.3.3'
-	id 'io.spring.dependency-management' version '1.1.6'
+    id 'java'
+    id 'org.springframework.boot' version '3.3.3'
+    id 'io.spring.dependency-management' version '1.1.6'
 }
 
 
-
-allprojects{
-	repositories {
-		mavenCentral()
-	}
+allprojects {
+    repositories {
+        mavenCentral()
+    }
 }
 
 bootJar {
-	enabled = false
+    enabled = false
 }
 
 jar {
-	enabled = false
+    enabled = false
 }

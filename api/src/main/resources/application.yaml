@@ -1,14 +1,15 @@
 spring:
   profiles:
-    active: ${spring.active}
+    active: ${spring.active:dev}
+
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
 
 server:
-  port: ${port:5000}
+  port: ${port:5002}
   forward-headers-strategy: native
 
-logging:
-  level:
-    com:
-      amazonaws:
-        util:
-          EC2MetadataUtils: error
+

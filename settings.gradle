@@ -1,6 +1,6 @@
 rootProject.name = 'plannet'
-include 'common'
 include 'domain'
+include 'common'
 include 'api'
-
+include 'fx-api'
 

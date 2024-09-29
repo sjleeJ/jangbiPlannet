@@ -5,71 +5,88 @@ plugins {
     id "org.asciidoctor.jvm.convert" version "3.3.2"
 }
 
-configurations {
-    asciidoctorExt
-}
-
 group = 'org.dev.plannet'
-version = 'unspecified'
+version = '1.0'
 
 repositories {
     mavenCentral()
+    maven { url 'https://jitpack.io' }
 }
 
 
-dependencies {
-//    implementation 'org.springframework.boot:spring-boot-starter-security'
-    implementation 'org.springframework.boot:spring-boot-starter-web'
-    compileOnly 'org.projectlombok:lombok'
-    runtimeOnly 'com.h2database:h2'
-    runtimeOnly 'com.mysql:mysql-connector-j'
-    annotationProcessor 'org.projectlombok:lombok'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-//    testImplementation 'org.springframework.security:spring-security-test'
-    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-
-    //rest docs 연결
-    asciidoctorExt 'org.springframework.restdocs:spring-restdocs-asciidoctor'
-    testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+    asciidoctorEx
 }
 
 ext {
-    snippetsDir = file('build/generated-snippets') // (5)
+    snippetsDir = file('./build/generated-snippets')
 }
 
+dependencies {
+    implementation project(':common')
+    implementation project(':domain')
 
-tasks.named('test') {
-    useJUnitPlatform()
-    outputs.dir snippetsDir // (6)
+    // other dependencies
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    runtimeOnly 'com.h2database:h2'
+    runtimeOnly 'com.mysql:mysql-connector-j'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+
+    // Spring REST Docs 추가
+    testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
+
+    // 스프링 swagger
+    implementation group: 'io.springfox', name: 'springfox-swagger2', version: '3.0.0'
+    implementation group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.1.0'
+
+    testImplementation 'org.mockito:mockito-core'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+
+    asciidoctorEx 'org.springframework.restdocs:spring-restdocs-asciidoctor'
 }
 
-test {
-    outputs.dir snippetsDir
-    useJUnitPlatform()
+springBoot {
+    buildInfo()
+    mainClass = "org.dev.plannet.Application"
 }
 
-asciidoctor {
-    configurations 'asciidoctorExt' // (7)
-    baseDirFollowsSourceFile() // (8)
-    inputs.dir snippetsDir // (9)
-    dependsOn test // (10)
-}
-
-asciidoctor.doFirst {
-    delete file('src/main/resources/static/docs')  // (11)
-}
-
-task copyDocument(type: Copy) { // (12)
-    dependsOn asciidoctor
-    from file("build/docs/asciidoc")
-    into file("src/main/resources/static/docs")
-}
 
 bootJar {
-    enabled = true
+    dependsOn asciidoctor
+    from("${asciidoctor.outputDir}") {
+        into 'static/docs'
+    }
 }
 
-jar{
+jar {
     enabled = false
 }
+
+tasks.named('test') {
+    useJUnitPlatform {
+        excludeTags("integration")
+    }
+}
+
+tasks.register("integrationTest", Test) {
+    outputs.dir snippetsDir
+    useJUnitPlatform {
+        includeTags("integration")
+    }
+}
+tasks.named('asciidoctor') {
+    inputs.dir snippetsDir
+    configurations 'asciidoctorEx'
+    dependsOn integrationTest
+}
+
