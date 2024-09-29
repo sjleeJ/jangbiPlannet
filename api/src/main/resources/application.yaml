@@ -2,6 +2,12 @@ spring:
   profiles:
     active: ${spring.active:dev}
 
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
+
 server:
   port: ${port:5002}
   forward-headers-strategy: native

@@ -40,6 +40,9 @@ public class SecurityConfig {
 
 	//권한 확인을 하지 않는 uri
 	private static final String[] PERMIT_ALL_PATTERNS = new String[] {
+		"/v3/api-docs/**",
+		"/swagger*/**",
+		"/swagger-ui/**",
 		"/open-api/**",
 	};
 
