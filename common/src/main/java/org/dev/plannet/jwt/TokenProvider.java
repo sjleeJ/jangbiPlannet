@@ -6,8 +6,8 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.stream.Collectors;
 
-import org.dev.plannet.error.TokenErrorCode;
-import org.dev.plannet.exception.ApiException;
+import org.dev.plannet.error.code.TokenErrorCode;
+import org.dev.plannet.error.exceptions.CustomException;
 import org.dev.plannet.member.Member;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -96,13 +96,13 @@ public class TokenProvider {
 			Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
 			return true;
 		} catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
-			throw new ApiException(TokenErrorCode.INVALID_SIGNATURE, "잘못된 서명");
+			throw new CustomException(TokenErrorCode.INVALID_SIGNATURE);
 		} catch (ExpiredJwtException e) {
-			throw new ApiException(TokenErrorCode.EXPIRED_TOKEN, "만료된 토큰");
+			throw new CustomException(TokenErrorCode.EXPIRED_TOKEN);
 		} catch (UnsupportedJwtException e) {
-			throw new ApiException(TokenErrorCode.UNSUPPORTED_JWT, "만료된 토큰");
+			throw new CustomException(TokenErrorCode.UNSUPPORTED_JWT);
 		} catch (IllegalArgumentException e) {
-			throw new ApiException(TokenErrorCode.ILLEGAL_TOKEN, "만료된 토큰");
+			throw new CustomException(TokenErrorCode.ILLEGAL_TOKEN);
 		}
 	}
 }

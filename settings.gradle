@@ -3,4 +3,6 @@ include 'domain'
 include 'common'
 include 'api'
 include 'fx-api'
+include 'fx-member'
+include 'fx-store'
 
