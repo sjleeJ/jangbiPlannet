@@ -13,8 +13,6 @@ import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * GenericFilterBean:  Spring Security와 통합하기 위한 추가적인 기능을 제공합니다. 주로 필터 체인에서 동작하는 커스텀 필터를 구현
@@ -22,12 +20,14 @@ import lombok.extern.slf4j.Slf4j;
  * 주로 JWT 인증이나 로깅, 헤더 검사 등의 요청을 처리할 때 사용됩니다.
  * 필터는 필터 체인에 등록되고, 순서를 제어할 수 있습니다.
  */
-@Slf4j
-@AllArgsConstructor
 public class JwtFilter extends GenericFilterBean {
 
 	public static final String AUTHORIZATION_HEADER = "Authorization";
 	private TokenProvider tokenProvider;
+
+	public JwtFilter(TokenProvider tokenProvider) {
+		this.tokenProvider = tokenProvider;
+	}
 
 	@Override
 	public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws
@@ -48,7 +48,6 @@ public class JwtFilter extends GenericFilterBean {
 		if (StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt)) {
 			Authentication authentication = tokenProvider.getAuthentication(jwt);
 			SecurityContextHolder.getContext().setAuthentication(authentication);
-			log.debug("Security Context에 '{}' 인증 정보를 저장했습니다, uri: {}", path);
 		}
 
 		filterChain.doFilter(servletRequest, servletResponse);
