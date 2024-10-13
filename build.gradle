@@ -28,8 +28,8 @@ ext {
 dependencies {
     implementation project(':common')
     implementation project(':domain')
-    implementation project(':fx-member')
-    implementation project(':fx-store')
+    implementation project(':member')
+    implementation project(':store')
 
     // other dependencies
     implementation 'org.springframework.boot:spring-boot-starter-web'
